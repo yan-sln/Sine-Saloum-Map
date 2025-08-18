@@ -15,6 +15,11 @@ class PlotData(Config):
         self.csv_path = csv_path or self.csv_src
         self.image = None
 
+    def run(self) -> None:
+        """Run full plotting sequence."""
+        self.load_image()
+        self.plot()
+
     def load_image(self) -> None:
         """Load the TIFF image from disk."""
         import rasterio
