@@ -24,23 +24,22 @@ The code is organized using an object-oriented design, ensuring that each compon
 ## Project Structure
 
 ```
-satellite_project/
+satellite-map/
 │
-├── satellite/                 
+├── satellite_map/                # Core package
 │   ├── __init__.py
-│   ├── config.py              # Global configuration
-│   ├── downloader.py          # SentinelHubDownloader
-│   ├── converter.py           # KmlCsvConverter
-│   ├── plotter.py             # DataPlotter
-│   └── utils/                 # Utility functions
-│       ├── __init__.py
-│       ├── file_utils.py
-│       └── geo_utils.py
+│   ├── config.py                  # Global variables & configuration
+│   ├── downloader.py              # SentinelHubDownload class
+│   ├── plotter.py                 # PlotDATA class
+│   ├── utils.py                   # Helpers (plot_image, kml_to_csv, etc.)
+│   └── pipeline.py                # Orchestrator
 │
-├── scripts/                   
-│   ├── download_and_plot.py   # Full pipeline execution
-│   └── convert_kml.py         # Run only KML → CSV conversion
+├── scripts/                       # CLI entry points
+│   ├── download_data.py
+│   ├── plot_data.py
+│   └── full_pipeline.py
 │
+├── README.md
 ├── requirements.txt
 └── pyproject.toml
 ```
