@@ -33,7 +33,35 @@ def kml_to_csv(kml_path: str, csv_out: str) -> None:
     df.to_csv(csv_out, index=False)
 
 
-def load_csv_data(csv_path: str) -> pd.DataFrame:
-    """Load CSV data with coordinates."""
-    logging.info("Loading CSV %s", csv_path)
-    return pd.read_csv(csv_path)
+def load_csv_data(path: str) -> pd.DataFrame:
+    """Load CSV file into a normalized DataFrame.
+
+    Normalizes column names to expected format:
+      - 'Name'      -> 'name'
+      - 'Longitude' -> 'lon'
+      - 'Latitude'  -> 'lat'
+      - 'Altitude'  -> 'alt' (if present)
+
+    Args:
+        path (str): Path to the CSV file.
+
+    Returns:
+        pd.DataFrame: DataFrame with standardized column names.
+    """
+    df = pd.read_csv(path)
+
+    # Map legacy column names to standardized ones
+    col_map = {
+        "Name": "name",
+        "Longitude": "lon",
+        "Latitude": "lat",
+        "Altitude": "alt",
+    }
+    df = df.rename(columns=col_map)
+
+    # Sanity check
+    required = {"name", "lon", "lat"}
+    if not required.issubset(df.columns):
+        raise ValueError(f"CSV file {path} must contain at least {required}")
+
+    return df
