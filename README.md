@@ -41,11 +41,6 @@ satellite_project/
 │   ├── download_and_plot.py   # Full pipeline execution
 │   └── convert_kml.py         # Run only KML → CSV conversion
 │
-├── tests/                     
-│   ├── test_downloader.py
-│   ├── test_converter.py
-│   └── test_plotter.py
-│
 ├── requirements.txt
 └── pyproject.toml
 ```
