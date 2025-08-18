@@ -38,6 +38,9 @@ satellite-map/
 │   ├── download_data.py
 │   ├── plot_data.py
 │   └── full_pipeline.py
+|
+├── data/
+│   └── SineSaloum.kml
 │
 ├── README.md
 ├── requirements.txt
