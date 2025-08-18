@@ -6,108 +6,112 @@ Created on Fri Aug  5 09:55:08 2022
 """
 
 from main import VariableGlobal
-
 import logging
+import os
 from csv import writer
-from os.path import exists
+from typing import List
 
 
 class KmlCSV(VariableGlobal):
-    """Create a csv file from a googleEarth kml file.
+    """
+    A class to convert a Google Earth KML file into a CSV file.
 
-0) __init__() : Initialise, act like a 'main', create DataFrame from list of list from filePrinter(), and save it as .csv file.
-1) filePrinter() : Input .kml file & return a list of list ready to be transformed in a .csv file.
-
-Note : Really high chance that it may breaks in the future..
+    0) __init__(): Initializes the class, checks for the input .kml file,
+       and creates a DataFrame that is saved as a .csv file.
+    1) filePrinter(): Processes the input .kml file and returns a list of lists
+       that can be directly written into a .csv file.
     """
 
-    def __init__(self):
-        """Initialise parent, verify if a .kml file is input, 
-create a DataFrame from the .kml file using filePrinter() & savec it in a .csv file.
+    def __init__(self) -> None:
         """
-        
-        # Initialise the 'parent class' 
-        VariableGlobal.__init__(self)
-        #
-        logging.warning('Start of conversion from kml to csv !')
-        
-        # Path of kml file
+        Initializes the KmlCSV class, processes the KML file, and creates the CSV file.
+        If the .kml file path is not provided, the user will be prompted to input it.
+        """
+        # Initialize the parent class (VariableGlobal) for shared resources and methods
+        super().__init__()
+
+        logging.warning("Starting the conversion from KML to CSV...")
+
+        # Prompt for the .kml file path if not provided as input to the class
         if not self.kmlSrc:
-            # Ask for .kml file path if not provided in __main__
-            self.kmlSrc = input(r'Path to googleEarth .kml file :').replace("'", '').replace('"', '')  
+            self.kmlSrc = input("Please provide the path to the Google Earth .kml file: ").strip().replace("'", "").replace('"', "")
 
-        # The basic usage is to first define the rows of the csv file:
-        row_list = self.filePrinter(self.kmlSrc)
-        
-        # Set path of soon to be created .csv file
-        self.csvPath = f'{self.workingDirectory}/{self.title}.csv'      
-        
-        # And then use the following to create the csv file:
-        with open(self.csvPath, 'w', newline='', encoding=('utf8')) as file:
-            csvWriter = writer(file)
-            csvWriter.writerows(row_list)
-        logging.warning('End of conversion from kml to csv !\n')
+        # Generate a list of rows (data) from the .kml file
+        rows = self.filePrinter(self.kmlSrc)
 
-    def filePrinter(self, path):
-        """"Return a [list] of every Names and corresponding coordinates,
-by reading line by line, corresponding DATA.
-        """
-        # Create frame of 'return [list]' (=names of Columns)
-        out = [["Name", "Longitude", "Latitude", "Altitude"]]
+        # Define the output path for the .csv file using the working directory and the title
+        self.csvPath = os.path.join(self.workingDirectory, f"{self.title}.csv")
+
+        # Write the rows into the .csv file
         try:
-            # Just a safeguard
-            if not exists(path):
-                logging.error('This file doesn\'t exist !')
-                quit()
-            else:
-                # Open .kml file
-                with open(path, 'r', encoding=('utf8')) as file:
-                    logging.debug('Start of file !')
-                    # Set [line] for
-                    line = []
-                    # Read line by line
-                    for ligne in file:
-                        # Search for tag <title> in file
-                        if ligne[:7] == '	<name>':
-                            self.title = ligne[7:-8]
-                            # And print the title of the file
-                            logging.debug(f'Titre : {self.title}')
-
-                        # Search for tag <desription> in file
-                        if ligne[:14] == '	<description>':
-                            description = ligne[14:-15]
-                            # And print the Description of the file
-                            logging.debug(f'Description : {description}')
-
-                        # Search for tag <name> in file
-                        if ligne[:8] == '		<name>':
-                            name = ligne[8:-8]
-                            # Retrieve data & add to line
-                            line.append(name)
-
-                        # Search for tag <coordinates> in file and -
-                        # retrieve Longitude, Latitude & Altitude
-                        if ligne[:16] == '			<coordinates>':
-                            lonLatAlt = ligne[16:-15]
-                            lonLatAlt = lonLatAlt.split(sep=',')
-                            # Add each coordinates individually in [line]
-                            for i in lonLatAlt:
-                                line.append(i)
-
-                        # 1 Name, and 3 coordinates per row
-                        if len(line) >= 4:
-                            # Add [line] in [out]
-                            out.append(line[-4:])
-                            # Reset [line]
-                            line = []
-
-                    logging.debug('End of file !')
-                # Return list of list [out]
-                return out
+            with open(self.csvPath, "w", newline="", encoding="utf-8") as file:
+                csv_writer = writer(file)
+                csv_writer.writerows(rows)
+            logging.warning(f"CSV file created successfully at: {self.csvPath}")
         except Exception as e:
-            logging.error('Something gone wrong !')
-            print(e)
+            logging.error(f"Failed to write CSV file due to: {e}")
+
+    def filePrinter(self, path: str) -> List[List[str]]:
+        """
+        Processes the KML file and extracts relevant data (names, coordinates).
+
+        Args:
+            path (str): The path to the KML file to be processed.
+
+        Returns:
+            list: A list of lists where each list contains the Name, Longitude, Latitude, and Altitude.
+        """
+        # Initialize the output list with column names for the CSV file
+        output = [["Name", "Longitude", "Latitude", "Altitude"]]
+
+        try:
+            # Check if the provided file exists
+            if not os.path.exists(path):
+                logging.error(f"The file '{path}' does not exist!")
+                raise FileNotFoundError(f"The file '{path}' does not exist.")
+
+            # Open and read the .kml file line by line
+            with open(path, "r", encoding="utf-8") as file:
+                logging.debug("Started reading the KML file...")
+
+                line_data = []  # Temporary list to store data for each point
+
+                # Process each line in the KML file
+                for line in file:
+                    # Extract the title of the KML file (assuming it is within <name> tags)
+                    if line.startswith("	<name>"):
+                        self.title = line[7:-8].strip()
+                        logging.debug(f"File Title: {self.title}")
+
+                    # Extract the description (optional, used for logging)
+                    if line.startswith("	<description>"):
+                        description = line[14:-15].strip()
+                        logging.debug(f"Description: {description}")
+
+                    # Extract the name of the place (within <name> tags)
+                    if line.startswith("		<name>"):
+                        name = line[8:-8].strip()
+                        line_data.append(name)
+
+                    # Extract coordinates (Longitude, Latitude, and Altitude) from <coordinates> tag
+                    if line.startswith("			<coordinates>"):
+                        coordinates = line[16:-15].strip()
+                        lon, lat, alt = coordinates.split(",")
+                        line_data.extend([lon, lat, alt])
+
+                    # If a full set of data (name + coordinates) is collected, add it to the output list
+                    if len(line_data) >= 4:
+                        output.append(line_data[-4:])  # Add last 4 elements (Name, Lon, Lat, Alt)
+                        line_data = []  # Reset line_data for the next entry
+
+                logging.debug("Finished reading the KML file...")
+
+            return output  # Return the processed data
+        except Exception as e:
+            logging.error(f"Error processing the KML file: {e}")
+            return []  # Return an empty list in case of error
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    # Output the class documentation for understanding the purpose of this script
     print(KmlCSV.__doc__)
