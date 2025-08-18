@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "satellite-map"
+version = "0.1.0"
+description = "Download and plot satellite maps from SentinelHub and annotate with custom data."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+    { name = "yan-s" }
+]
+keywords = ["satellite", "sentinelhub", "gis", "mapping", "remote sensing"]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: GIS",
+]
+
+dependencies = [
+    "sentinelhub",
+    "matplotlib",
+    "pandas",
+    "lxml",
+    "shapely",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/satellite-map"
+Documentation = "https://github.com/yourusername/satellite-map/wiki"
+Issues = "https://github.com/yourusername/satellite-map/issues"
+
+[project.scripts]
+satellite-download = "scripts.download_data:main"
+satellite-plot = "scripts.plot_data:main"
+satellite-pipeline = "scripts.full_pipeline:main"
+
+[tool.setuptools.packages.find]
+exclude = ["tests", "docs", "notebooks"]
