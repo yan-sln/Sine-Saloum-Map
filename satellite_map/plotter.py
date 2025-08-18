@@ -2,6 +2,7 @@ import logging
 import matplotlib.pyplot as plt
 from matplotlib_scalebar.scalebar import ScaleBar
 
+from pathlib import Path
 from .config import Config
 from .utils import load_csv_data
 
@@ -9,9 +10,20 @@ from .utils import load_csv_data
 class PlotData(Config):
     """Handle plotting of SentinelHub imagery with annotations."""
 
-    def __init__(self, image_path: str, csv_path: str | None = None) -> None:
+    def __init__(self, image_path: str | None = None, csv_path: str | None = None) -> None:
         super().__init__()
-        self.image_path = image_path
+
+        # Auto-detect TIFF file if no image_path is provided
+        if image_path is None:
+            tiffs = list(Path(self.working_directory).glob("**/*.tiff"))
+            if not tiffs:
+                raise FileNotFoundError(
+                    "No .tiff file found. Provide image_path explicitly or run the downloader first."
+                )
+            self.image_path = str(tiffs[0])
+        else:
+            self.image_path = image_path
+
         self.csv_path = csv_path or self.csv_src
         self.image = None
 
