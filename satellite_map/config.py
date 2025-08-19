@@ -19,7 +19,7 @@ class Config:
 
         # CSV / KML input
         self.csv_src: str = ""
-        self.kml_src: str = "../Data/Sine_Saloum.kml"
+        self.kml_src: str = "/data/Sine_Saloum.kml"
 
         # Plot parameters
         self.fig_size = (32.0, 24.0)
