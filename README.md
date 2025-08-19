@@ -119,7 +119,7 @@ python scripts/convert_kml.py --input data/input.kml --output data/output.csv
 
 ## Requirements
 
-* Python 3.9+
+* Python 3.10+
 * sentinelhub-py
 * pandas
 * matplotlib
