@@ -76,8 +76,7 @@ Before running the pipeline, you must configure your SentinelHub credentials and
 
 You can either:
 
-* Edit `satellite/config.py` directly, or
-* Create a `config.yaml` file with the following structure:
+* Edit `satellite/config.py` directly, file with the following structure:
 
 ```yaml
 instance_id: "your_instance_id"
