@@ -17,7 +17,7 @@ The code is organized using an object-oriented design, ensuring that each compon
 * Download high-resolution satellite maps from SentinelHub with minimal cloud coverage.
 * Convert KML files into CSV format (compatible with WGS84 coordinates).
 * Plot points on top of satellite imagery with customizable labels, corrections, and styling.
-* Configurable via a central configuration file (`config.py` or `config.yaml`).
+* Configurable via a central configuration file (`config.py`).
 
 ---
 
@@ -99,7 +99,9 @@ output_dir: "SentinelDownload"
 ### Run the full pipeline:
 
 ```bash
-python scripts/download_and_plot.py
+python scripts/full_pipeline.py
+python scripts/download_data.py
+python scripts/plot_data.py
 ```
 
 This will:
@@ -109,12 +111,6 @@ This will:
 * Plot the points on the satellite map,
 * Save the final annotated image into the `SentinelDownload` directory.
 
-### Convert only a KML file:
-
-```bash
-python scripts/convert_kml.py --input data/input.kml --output data/output.csv
-```
-
 ---
 
 ## Requirements
@@ -123,8 +119,6 @@ python scripts/convert_kml.py --input data/input.kml --output data/output.csv
 * sentinelhub-py
 * pandas
 * matplotlib
-* opencv-python
-* pyyaml
 
 All dependencies are listed in `requirements.txt`.
 
