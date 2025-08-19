@@ -46,8 +46,9 @@ class PlotData(Config):
         if self.image is None:
             raise RuntimeError("Image not loaded. Call load_image() first.")
 
+        minx, miny, maxx, maxy = self.bbox  # WGS84 degrees
         fig, ax = plt.subplots(figsize=self.fig_size, dpi=self.dpi)
-        ax.imshow(self.image)
+        ax.imshow(self.image, extent=(minx, maxx, miny, maxy), origin="upper")
         ax.set_title(self.fig_title)
         ax.set_xlabel(self.x_label)
         ax.grid(self.grid)
