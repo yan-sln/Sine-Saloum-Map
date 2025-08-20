@@ -74,9 +74,7 @@ pip install -r requirements.txt
 
 Before running the pipeline, you must configure your SentinelHub credentials and project settings.
 
-You can either:
-
-* Edit `satellite/config.py` directly, file with the following structure:
+You must edit `satellite/config.py` directly, file with the following structure:
 
 ```yaml
 instance_id: "your_instance_id"
