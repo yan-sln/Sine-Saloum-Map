@@ -126,4 +126,10 @@ All dependencies are listed in `requirements.txt`.
 * Extend plotting options (color maps, layers, interactive visualization).
 * Improve error handling and logging.
 
+---
+
+## Example Output
+
+After running the script, the output will be a map like the following example:
+
 ![V2 2](https://user-images.githubusercontent.com/110732997/220370356-804d294e-cd22-4a8b-aaeb-c1270a721d2c.png)
