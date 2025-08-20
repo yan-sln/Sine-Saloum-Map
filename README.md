@@ -54,8 +54,8 @@ satellite-map/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yan-sln/satellite_project.git
-cd satellite_project
+git clone https://github.com/yan-sln/Sine-Saloum-Map.git
+cd Sine-Saloum-Map
 ```
 
 2. Create a virtual environment and install dependencies:
