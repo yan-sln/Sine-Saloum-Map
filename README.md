@@ -1,4 +1,4 @@
-# Satellite Project
+# Sine Saloum Map
 
 ## Overview
 
@@ -7,8 +7,6 @@ This project provides a modular Python pipeline to:
 1. Download satellite imagery from the **SentinelHub API**.
 2. Convert **Google Earth KML files** into CSV format containing names and coordinates.
 3. Plot the extracted points onto the satellite imagery with custom annotations.
-
-The code is organized using an object-oriented design, ensuring that each component has a clear responsibility. This makes the system easier to maintain, test, and extend.
 
 ---
 
