@@ -54,7 +54,7 @@ satellite-map/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/satellite_project.git
+git clone https://github.com/yan-sln/satellite_project.git
 cd satellite_project
 ```
 
